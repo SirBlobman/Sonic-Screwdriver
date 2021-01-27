@@ -1,0 +1,31 @@
+name: "${bukkit.plugin.name}"
+prefix: "${bukkit.plugin.prefix}"
+description: "${bukkit.plugin.description}"
+website: "https://www.spigotmc.org/resources/32859/"
+
+main: "${bukkit.plugin.main}"
+version: "${bukkit.plugin.version}"
+api-version: "1.13"
+
+authors:
+  - "SirBlobman"
+
+depend:
+  - "SirBlobmanCore"
+
+commands:
+  sonic-screwdriver:
+    description: "Give yourself or another player a sonic screwdriver item."
+    permission: "sonic.screwdriver.give"
+    usage: "/<command> [player]"
+    aliases:
+      - "sonicscrewdriver"
+      - "screwdriver"
+      - "sonicprobe"
+      - "sonic"
+      - "probe"
+
+permissions:
+  sonic.screwdriver.give:
+    description: "Gives access to the '/sonic-screwdriver' command."
+    default: op

@@ -1,0 +1,72 @@
+[SIZE=5][B]Supported Spigot Versions:[/B][/SIZE]
+1.13.2, 1.14.4, 1.15.2, 1.16.5
+
+[SIZE=5][COLOR=#FF0000][B]Description:[/B][/COLOR][/SIZE]
+Sonic Screwdriver is a plugin that adds a very powerful tool modeled after the sonic screwdriver from the 'Doctor Who' TV series.
+
+[SIZE=5][B][COLOR=#FF0000]Dependencies:[/COLOR][/B][/SIZE]
+[LIST]
+[*][URL='https://www.spigotmc.org/resources/83189/']SirBlobmanCore[/URL]
+[/LIST]
+
+[SIZE=5][COLOR=#FF0000][B]Features:[/B][/COLOR][/SIZE]
+[LIST]
+[*]Ignite TNT to create a gigantic explosion
+[*]Light nether portals.
+[*]Instantly break certain block types. (glass, vines, ladders, and webs)
+[*]Open iron doors and trapdoors without redstone.
+[*]Customizable sound and action bar.
+[/LIST]
+
+[SIZE=5][COLOR=#FF0000][B]Configuration:[/B][/COLOR][/SIZE]
+[SPOILER='config.yml']
+[CODE=YAML]
+# Should the plugin be allowed to check for updates?
+update-checker: true
+
+# Configuration Settings
+options:
+  # What sound packet should be sent to the player when they use a sonic screwdriver?
+  # If you have a resource pack with custom sounds you can also use those.
+  # Default: "sonic.screwdriver"
+  sound: "sonic.screwdriver"
+
+  # Which permission will be required to use the sonic screwdriver item?
+  # This permission is NOT given to OPs by default.
+  # Default: "sonic.screwdriver"
+  permission: "sonic.screwdriver"
+
+  # What should the item look like for the sonic screwdriver?
+  # If you know how to serialize ItemStacks you can use that as a value as well.
+  # Default: Blaze Rod with name "&fSonic Screwdriver" and lore ["&5Doctor Who!", "&7&oAllons-y!!"]
+  item:
+    material: BLAZE_ROD
+    quantity: 1
+    damage: 0
+    display-name: "&fSonic Screwdriver"
+    lore:
+      - "&5Doctor Who!"
+      - "&7&oAllons-y!!"
+
+# Language Messages
+language:
+  action-bar: "Whirr!"
+  not-player: "&cOnly players can execute this command."
+  invalid-target: "&cThat player is not online or does not exist."
+  successful-give: "&cYou gave a sonic screwdriver to &7{target}&a."
+  give-sonic: "&aYou are now The Doctor!"
+[/CODE]
+[/SPOILER]
+
+[SIZE=5][COLOR=#FF0000][B]Commands and Permissions:[/B][/COLOR][/SIZE]
+[LIST]
+[*][B]/sonic-screwdriver [player][/B]: Give a sonic screwdriver to yourself or another player.
+[*][B]sonic.screwdriver[/B]: Allow a player to use the sonic screwdriver item. (configurable)
+[/LIST]
+
+[SIZE=5][B][COLOR=#FF0000]Help and Support:[/COLOR][/B][/SIZE]
+Click the image to join my discord for support. You can also join if you have feature requests or if you just want to chat with other users.
+[URL='https://discord.gg/XMg2agT'][IMG]https://discordapp.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png[/IMG][/URL]
+
+[SIZE=5][B][COLOR=#FF0000]Extra Information:[/COLOR][/B][/SIZE]
+Please do not use a review to leave bug reports or errors. I am not able to help you through a review.

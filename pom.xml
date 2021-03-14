@@ -31,11 +31,11 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-
-        <!-- CodeMC Public Repository -->
+        
+        <!-- SirBlobman Public Repository -->
         <repository>
-            <id>codemc-public</id>
-            <url>https://repo.codemc.io/repository/maven-public/</url>
+            <id>sirblobman-public</id>
+            <url>https://nexus.sirblobman.xyz/repository/public/</url>
         </repository>
     </repositories>
     
@@ -56,6 +56,20 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+    
+    <distributionManagement>
+        <!-- SirBlobman Releases -->
+        <repository>
+            <id>sb-public-releases</id>
+            <url>https://nexus.sirblobman.xyz/repository/public-releases/</url>
+        </repository>
+        
+        <!-- SirBlobman Snapshots -->
+        <snapshotRepository>
+            <id>sb-public-snapshots</id>
+            <url>https://nexus.sirblobman.xyz/repository/public-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
     
     <build>
         <finalName>${bukkit.plugin.name}-${bukkit.plugin.version}</finalName>

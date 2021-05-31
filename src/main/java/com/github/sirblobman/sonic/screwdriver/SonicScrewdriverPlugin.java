@@ -13,23 +13,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.sirblobman.api.configuration.ConfigurationManager;
 import com.github.sirblobman.api.core.CorePlugin;
+import com.github.sirblobman.api.core.plugin.ConfigurablePlugin;
 import com.github.sirblobman.api.item.ItemBuilder;
 import com.github.sirblobman.api.language.Replacer;
 import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
-import com.github.sirblobman.api.update.UpdateChecker;
+import com.github.sirblobman.api.update.UpdateManager;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.MessageUtility;
 import com.github.sirblobman.api.xseries.XMaterial;
 import com.github.sirblobman.sonic.screwdriver.command.CommandSonicScrewdriver;
 import com.github.sirblobman.sonic.screwdriver.listener.ListenerSonicScrewdriver;
 
-public final class SonicScrewdriverPlugin extends JavaPlugin {
-    private final ConfigurationManager configurationManager;
-    public SonicScrewdriverPlugin() {
-        this.configurationManager = new ConfigurationManager(this);
-    }
-
+public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
     @Override
     public void onLoad() {
         ConfigurationManager configurationManager = getConfigurationManager();
@@ -38,26 +34,19 @@ public final class SonicScrewdriverPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new ListenerSonicScrewdriver(this), this);
         new CommandSonicScrewdriver(this).register();
 
-        UpdateChecker updateChecker = new UpdateChecker(this, 32859L);
-        updateChecker.runCheck();
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new ListenerSonicScrewdriver(this), this);
+
+        CorePlugin corePlugin = JavaPlugin.getPlugin(CorePlugin.class);
+        UpdateManager updateManager = corePlugin.getUpdateManager();
+        updateManager.addResource(this, 32859L);
     }
 
     @Override
     public void onDisable() {
         // Do Nothing
-    }
-
-    public MultiVersionHandler getMultiVersionHandler() {
-        CorePlugin corePlugin = JavaPlugin.getPlugin(CorePlugin.class);
-        return corePlugin.getMultiVersionHandler();
-    }
-
-    public ConfigurationManager getConfigurationManager() {
-        return this.configurationManager;
     }
 
     public void sendMessage(CommandSender sender, String path) {

@@ -22,7 +22,7 @@
         <bukkit.plugin.description>${project.description}</bukkit.plugin.description>
         
         <bukkit.plugin.main>com.github.sirblobman.sonic.screwdriver.SonicScrewdriverPlugin</bukkit.plugin.main>
-        <bukkit.plugin.version>4.0.0</bukkit.plugin.version>
+        <bukkit.plugin.version>4.0.1</bukkit.plugin.version>
     </properties>
     
     <repositories>
@@ -43,7 +43,7 @@
 		<!-- Spigot API -->
 		<dependency>
 			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot</artifactId>
+			<artifactId>spigot-api</artifactId>
 			<version>${spigot.version}</version>
 			<scope>provided</scope>
 		</dependency>

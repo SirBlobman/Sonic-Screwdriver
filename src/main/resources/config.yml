@@ -21,11 +21,3 @@ options:
     lore:
       - "&5Doctor Who!"
       - "&7&oAllons-y!!"
-
-# Language Messages
-language:
-  action-bar: "Whirr!"
-  not-player: "&cOnly players can execute this command."
-  invalid-target: "&cThat player is not online or does not exist."
-  successful-give: "&cYou gave a sonic screwdriver to &7{target}&a."
-  give-sonic: "&aYou are now The Doctor!"

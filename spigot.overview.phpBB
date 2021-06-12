@@ -21,9 +21,6 @@ Sonic Screwdriver is a plugin that adds a very powerful tool modeled after the s
 [SIZE=5][COLOR=#FF0000][B]Configuration:[/B][/COLOR][/SIZE]
 [SPOILER='config.yml']
 [CODE=YAML]
-# Should the plugin be allowed to check for updates?
-update-checker: true
-
 # Configuration Settings
 options:
   # What sound packet should be sent to the player when they use a sonic screwdriver?
@@ -48,13 +45,6 @@ options:
       - "&5Doctor Who!"
       - "&7&oAllons-y!!"
 
-# Language Messages
-language:
-  action-bar: "Whirr!"
-  not-player: "&cOnly players can execute this command."
-  invalid-target: "&cThat player is not online or does not exist."
-  successful-give: "&cYou gave a sonic screwdriver to &7{target}&a."
-  give-sonic: "&aYou are now The Doctor!"
 [/CODE]
 [/SPOILER]
 

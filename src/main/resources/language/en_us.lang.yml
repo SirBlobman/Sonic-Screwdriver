@@ -1,0 +1,10 @@
+language-name: "en_us"
+
+error:
+  player-only: "&cOnly players can execute this command."
+  invalid-target: "&7{target}&c is not online or does not exist."
+
+action-bar: "Whirr!"
+give-sonic: "&aYou are now The Doctor!"
+successful-give: "&cYou gave a sonic screwdriver to &7{target}&a."
+overpowered-tnt-nearby: "&cAs The Doctor would say... RUN!!!!"

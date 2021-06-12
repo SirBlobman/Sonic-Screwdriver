@@ -1,6 +1,3 @@
-# Should the plugin be allowed to check for updates?
-update-checker: true
-
 # Configuration Settings
 options:
   # What sound packet should be sent to the player when they use a sonic screwdriver?

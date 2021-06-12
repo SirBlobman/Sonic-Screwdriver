@@ -5,7 +5,7 @@ website: "https://www.spigotmc.org/resources/32859/"
 
 main: "${bukkit.plugin.main}"
 version: "${bukkit.plugin.version}"
-api-version: "1.13"
+api-version: "1.17"
 
 authors:
   - "SirBlobman"

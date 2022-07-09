@@ -32,7 +32,7 @@ public final class CommandSonicScrewdriver extends Command {
     public List<String> onTabComplete(CommandSender sender, String[] args) {
         if(args.length == 1) {
             Set<String> valueSet = getOnlinePlayerNames();
-            return getMatching(valueSet, args[0]);
+            return getMatching(args[0], valueSet);
         }
 
         return Collections.emptyList();
@@ -48,7 +48,9 @@ public final class CommandSonicScrewdriver extends Command {
 
         String targetName = (args.length < 1 ? sender.getName() : args[0]);
         Player target = findTarget(sender, targetName);
-        if(target == null) return true;
+        if(target == null) {
+            return true;
+        }
 
         String realTargetName = target.getName();
         ItemStack item = this.plugin.getSonicScrewdriver();

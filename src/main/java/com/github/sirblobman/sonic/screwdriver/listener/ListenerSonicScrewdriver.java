@@ -26,11 +26,11 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
 import com.github.sirblobman.api.configuration.ConfigurationManager;
-import com.github.sirblobman.api.core.listener.PluginListener;
 import com.github.sirblobman.api.item.ItemBuilder;
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
 import com.github.sirblobman.api.nms.PlayerHandler;
+import com.github.sirblobman.api.plugin.listener.PluginListener;
 import com.github.sirblobman.api.xseries.XMaterial;
 import com.github.sirblobman.sonic.screwdriver.SonicScrewdriverPlugin;
 
@@ -48,17 +48,25 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
     public void onInteract(PlayerInteractEvent e) {
         Action action = e.getAction();
-        if(action != Action.RIGHT_CLICK_BLOCK) return;
+        if(action != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
 
         Block block = e.getClickedBlock();
-        if(block == null) return;
+        if(block == null) {
+            return;
+        }
 
         ItemStack item = e.getItem();
         SonicScrewdriverPlugin plugin = getPlugin();
-        if(!plugin.isSonicScrewdriver(item)) return;
+        if(!plugin.isSonicScrewdriver(item)) {
+            return;
+        }
 
         Player player = e.getPlayer();
-        if(!hasPermission(player)) return;
+        if(!hasPermission(player)) {
+            return;
+        }
 
         e.setCancelled(true);
         playAction(player);
@@ -67,9 +75,8 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
         Block belowBlock = block.getRelative(BlockFace.DOWN);
         BlockData blockData = block.getBlockData();
 
-        if(blockData instanceof Openable) {
-            if(blockData instanceof Door) {
-                Door door = (Door) blockData;
+        if(blockData instanceof Openable openable) {
+            if(openable instanceof Door door) {
                 Half half = door.getHalf();
                 if(half == Half.TOP) {
                     Door doorBottom = (Door) belowBlock.getBlockData();
@@ -79,7 +86,6 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
                 }
             }
 
-            Openable openable = (Openable) blockData;
             openable.setOpen(!openable.isOpen());
             block.setBlockData(openable);
             return;
@@ -113,7 +119,9 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
         ConfigurationManager configurationManager = getPlugin().getConfigurationManager();
         YamlConfiguration configuration = configurationManager.get("config.yml");
         String permissionName = configuration.getString("options.permission");
-        if(permissionName == null || permissionName.isEmpty()) return true;
+        if(permissionName == null || permissionName.isEmpty()) {
+            return true;
+        }
 
         Permission permission = new Permission(permissionName, "Use Sonic Screwdriver Item", PermissionDefault.FALSE);
         return player.hasPermission(permission);
@@ -146,7 +154,9 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
 
     private void spawnOverpoweredTNT(Location location) {
         World world = location.getWorld();
-        if(world == null) return;
+        if(world == null) {
+            return;
+        }
 
         TNTPrimed tntEntity = world.spawn(location, TNTPrimed.class, preTntEntity -> {
             preTntEntity.setIsIncendiary(true);

@@ -29,11 +29,14 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
         configurationManager.saveDefault("config.yml");
 
         LanguageManager languageManager = getLanguageManager();
-        languageManager.saveDefaultLanguages();
+        languageManager.saveDefaultLanguageFiles();
     }
 
     @Override
     public void onEnable() {
+        LanguageManager languageManager = getLanguageManager();
+        languageManager.reloadLanguageFiles();
+
         new CommandSonicScrewdriver(this).register();
         new ListenerSonicScrewdriver(this).register();
 
@@ -51,10 +54,15 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
         ConfigurationManager configurationManager = getConfigurationManager();
         YamlConfiguration configuration = configurationManager.get("config.yml");
         ConfigurationSection section = configuration.getConfigurationSection("options.item");
-        if(section == null) throw new IllegalStateException("Invalid Sonic Screwdriver Item In Config!");
+        if(section == null) {
+            throw new IllegalStateException("Invalid Sonic Screwdriver Item In Config!");
+        }
 
         String materialName = section.getString("material");
-        if(materialName == null) materialName = "BLAZE_ROD";
+        if(materialName == null) {
+            materialName = "BLAZE_ROD";
+        }
+
         Optional<XMaterial> optionalMaterial = XMaterial.matchXMaterial(materialName);
         XMaterial material = optionalMaterial.orElse(XMaterial.BLAZE_ROD);
         ItemBuilder builder = new ItemBuilder(material);
@@ -93,7 +101,10 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
     }
 
     public boolean isSonicScrewdriver(ItemStack item) {
-        if(ItemUtility.isAir(item)) return false;
+        if(ItemUtility.isAir(item)) {
+            return false;
+        }
+
         MultiVersionHandler multiVersionHandler = getMultiVersionHandler();
         ItemHandler itemHandler = multiVersionHandler.getItemHandler();
 

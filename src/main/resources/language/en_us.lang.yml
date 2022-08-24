@@ -1,10 +1,10 @@
 language-name: "en_us"
 
 error:
-  player-only: "&cOnly players can execute this command."
-  invalid-target: "&7{target}&c is not online or does not exist."
+  player-only: "<red>Only players can execute this command.</red>"
+  invalid-target: "<red><gray>{target}</gray> is not online or does not exist.</red>"
 
-action-bar: "Whirr!"
-give-sonic: "&aYou are now The Doctor!"
-successful-give: "&cYou gave a sonic screwdriver to &7{target}&a."
-overpowered-tnt-nearby: "&cAs The Doctor would say... RUN!!!!"
+action-bar: "<white>Whirr!</white>"
+give-sonic: "<green>You are now The Doctor!</green>"
+successful-give: "<green>You gave a sonic screwdriver to <gray>{target}</gray>.</green>"
+overpowered-tnt-nearby: "<red><bold>As The Doctor would say... RUN!!!!</bold></red>"

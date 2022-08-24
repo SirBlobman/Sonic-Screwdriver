@@ -9,23 +9,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.github.sirblobman.api.command.Command;
-import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.language.Replacer;
+import com.github.sirblobman.api.language.SimpleReplacer;
 import com.github.sirblobman.sonic.screwdriver.SonicScrewdriverPlugin;
-
-import org.jetbrains.annotations.NotNull;
 
 public final class CommandSonicScrewdriver extends Command {
     private final SonicScrewdriverPlugin plugin;
+
     public CommandSonicScrewdriver(SonicScrewdriverPlugin plugin) {
         super(plugin, "sonic-screwdriver");
+        setPermissionName("sonic.screwdriver.give");
         this.plugin = plugin;
-    }
-
-    @NotNull
-    @Override
-    protected LanguageManager getLanguageManager() {
-        return this.plugin.getLanguageManager();
     }
 
     @Override
@@ -40,9 +34,8 @@ public final class CommandSonicScrewdriver extends Command {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        LanguageManager languageManager = getLanguageManager();
         if(args.length == 0 && !(sender instanceof Player)) {
-            languageManager.sendMessage(sender, "error.player-only", null, true);
+            sendMessage(sender, "error.player-only", null);
             return true;
         }
 
@@ -53,12 +46,17 @@ public final class CommandSonicScrewdriver extends Command {
         }
 
         String realTargetName = target.getName();
-        ItemStack item = this.plugin.getSonicScrewdriver();
+        SonicScrewdriverPlugin plugin = getSonicScrewdriverPlugin();
+        ItemStack item = plugin.getSonicScrewdriver();
         giveItems(target, item);
 
-        Replacer replacer = message -> message.replace("{target}", realTargetName);
-        languageManager.sendMessage(sender, "successful-give", replacer, true);
-        languageManager.sendMessage(target, "give-sonic", null, true);
+        Replacer replacer = new SimpleReplacer("{target}", realTargetName);
+        sendMessage(sender, "successful-give", replacer);
+        sendMessage(target, "give-sonic", null);
         return true;
+    }
+
+    private SonicScrewdriverPlugin getSonicScrewdriverPlugin() {
+        return this.plugin;
     }
 }

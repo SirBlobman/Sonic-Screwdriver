@@ -28,21 +28,18 @@ import org.bukkit.permissions.PermissionDefault;
 import com.github.sirblobman.api.configuration.ConfigurationManager;
 import com.github.sirblobman.api.item.ItemBuilder;
 import com.github.sirblobman.api.language.LanguageManager;
-import com.github.sirblobman.api.nms.MultiVersionHandler;
-import com.github.sirblobman.api.nms.PlayerHandler;
 import com.github.sirblobman.api.plugin.listener.PluginListener;
 import com.github.sirblobman.api.xseries.XMaterial;
+import com.github.sirblobman.api.xseries.XTag;
 import com.github.sirblobman.sonic.screwdriver.SonicScrewdriverPlugin;
 
 public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdriverPlugin> {
     private final Set<XMaterial> instantBreakSet;
+
     public ListenerSonicScrewdriver(SonicScrewdriverPlugin plugin) {
         super(plugin);
         this.instantBreakSet = EnumSet.of(XMaterial.COBWEB, XMaterial.LADDER, XMaterial.VINE);
-
-        Set<XMaterial> glassSet = EnumSet.allOf(XMaterial.class);
-        glassSet.removeIf(material -> !material.name().contains("GLASS"));
-        this.instantBreakSet.addAll(glassSet);
+        this.instantBreakSet.addAll(XTag.GLASS.getValues());
     }
 
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
@@ -129,21 +126,15 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
 
     private void playAction(Player player) {
         SonicScrewdriverPlugin plugin = getPlugin();
+        LanguageManager languageManager = plugin.getLanguageManager();
+        languageManager.sendActionBar(player, "action-bar", null);
+
         ConfigurationManager configurationManager = plugin.getConfigurationManager();
         YamlConfiguration configuration = configurationManager.get("config.yml");
-
         String soundName = configuration.getString("options.sound");
         if(soundName != null && !soundName.isEmpty()) {
             Location location = player.getLocation();
             player.playSound(location, soundName, 1.0F, 1.0F);
-        }
-
-        LanguageManager languageManager = plugin.getLanguageManager();
-        String actionBarMessage = languageManager.getMessage(player, "action-bar", null, true);
-        if(!actionBarMessage.isEmpty()) {
-            MultiVersionHandler multiVersionHandler = plugin.getMultiVersionHandler();
-            PlayerHandler playerHandler = multiVersionHandler.getPlayerHandler();
-            playerHandler.sendActionBar(player, actionBarMessage);
         }
     }
 
@@ -165,12 +156,14 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
         });
 
         List<Entity> nearbyEntityList = tntEntity.getNearbyEntities(20.0D, 20.0D, 20.0D);
-        nearbyEntityList.forEach(this::sendOverpoweredTntMessage);
+        for (Entity entity : nearbyEntityList) {
+            sendOverpoweredTntMessage(entity);
+        }
     }
 
     private void sendOverpoweredTntMessage(Entity entity) {
         SonicScrewdriverPlugin plugin = getPlugin();
         LanguageManager languageManager = plugin.getLanguageManager();
-        languageManager.sendMessage(entity, "overpowered-tnt-nearby", null, true);
+        languageManager.sendMessage(entity, "overpowered-tnt-nearby", null);
     }
 }

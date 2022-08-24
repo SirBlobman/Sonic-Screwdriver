@@ -30,7 +30,6 @@ import com.github.sirblobman.api.item.ItemBuilder;
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.listener.PluginListener;
 import com.github.sirblobman.api.xseries.XMaterial;
-import com.github.sirblobman.api.xseries.XTag;
 import com.github.sirblobman.sonic.screwdriver.SonicScrewdriverPlugin;
 
 public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdriverPlugin> {
@@ -39,7 +38,10 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
     public ListenerSonicScrewdriver(SonicScrewdriverPlugin plugin) {
         super(plugin);
         this.instantBreakSet = EnumSet.of(XMaterial.COBWEB, XMaterial.LADDER, XMaterial.VINE);
-        this.instantBreakSet.addAll(XTag.GLASS.getValues());
+
+        Set<XMaterial> glassSet = EnumSet.allOf(XMaterial.class);
+        glassSet.removeIf(material -> !material.name().contains("GLASS"));
+        this.instantBreakSet.addAll(glassSet);
     }
 
     @EventHandler(priority=EventPriority.NORMAL)

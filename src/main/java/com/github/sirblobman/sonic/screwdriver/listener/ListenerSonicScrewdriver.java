@@ -42,31 +42,38 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
         this.instantBreakSet.addAll(XTag.GLASS.getValues());
     }
 
-    @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
+    @EventHandler(priority=EventPriority.NORMAL)
     public void onInteract(PlayerInteractEvent e) {
+        printDebug("Detected PlayerInteractEvent");
+
         Action action = e.getAction();
         if(action != Action.RIGHT_CLICK_BLOCK) {
+            printDebug("Action is not RIGHT_CLICK_BLOCK, ignoring.");
             return;
         }
 
         Block block = e.getClickedBlock();
         if(block == null) {
+            printDebug("Clicked block is null, ignoring.");
             return;
         }
 
         ItemStack item = e.getItem();
         SonicScrewdriverPlugin plugin = getPlugin();
         if(!plugin.isSonicScrewdriver(item)) {
+            printDebug("Item is not sonic screwdriver, ignoring.");
             return;
         }
 
         Player player = e.getPlayer();
         if(!hasPermission(player)) {
+            printDebug("Player does not have permission to use the item, ignoring.");
             return;
         }
 
         e.setCancelled(true);
         playAction(player);
+        printDebug("Cancelled event and played action for player.");
 
         Block aboveBlock = block.getRelative(BlockFace.UP);
         Block belowBlock = block.getRelative(BlockFace.DOWN);
@@ -165,5 +172,10 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
         SonicScrewdriverPlugin plugin = getPlugin();
         LanguageManager languageManager = plugin.getLanguageManager();
         languageManager.sendMessage(entity, "overpowered-tnt-nearby", null);
+    }
+
+    private void printDebug(String message) {
+        SonicScrewdriverPlugin plugin = getPlugin();
+        plugin.printDebug(message);
     }
 }

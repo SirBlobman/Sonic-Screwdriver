@@ -2,9 +2,20 @@ language-name: "en_us"
 
 error:
   player-only: "<red>Only players can execute this command.</red>"
+  no-permission: "<red>Missing Permission: <gray>{permission}</gray>.</red>"
   invalid-target: "<red><gray>{target}</gray> is not online or does not exist.</red>"
 
 action-bar: "<white>Whirr!</white>"
 give-sonic: "<green>You are now The Doctor!</green>"
 successful-give: "<green>You gave a sonic screwdriver to <gray>{target}</gray>.</green>"
 overpowered-tnt-nearby: "<red><bold>As The Doctor would say... RUN!!!!</bold></red>"
+
+sonic-screwdriver:
+  display-name: "<white>Sonic Screwdriver</white>"
+  lore:
+    - "<dark_purple>Doctor Who!</dark_purple>"
+    - "<gray><italic>Allons-y!!</italic></gray>"
+  sound:
+    name: "custom:sonic.screwdriver"
+    volume: "1.0"
+    pitch: "1.0"

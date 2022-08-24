@@ -47,7 +47,7 @@ public final class CommandSonicScrewdriver extends Command {
 
         String realTargetName = target.getName();
         SonicScrewdriverPlugin plugin = getSonicScrewdriverPlugin();
-        ItemStack item = plugin.getSonicScrewdriver();
+        ItemStack item = plugin.getSonicScrewdriver(target);
         giveItems(target, item);
 
         Replacer replacer = new SimpleReplacer("{target}", realTargetName);

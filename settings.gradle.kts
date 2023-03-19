@@ -1,1 +1,1 @@
-rootProject.name = "Disco Armor"
+rootProject.name = "Sonic Screwdriver"

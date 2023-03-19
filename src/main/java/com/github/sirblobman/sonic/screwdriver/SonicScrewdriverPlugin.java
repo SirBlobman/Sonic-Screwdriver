@@ -1,18 +1,13 @@
 package com.github.sirblobman.sonic.screwdriver;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.regex.Pattern;
 
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.sirblobman.api.adventure.adventure.text.Component;
-import com.github.sirblobman.api.adventure.adventure.text.minimessage.MiniMessage;
 import com.github.sirblobman.api.bstats.bukkit.Metrics;
 import com.github.sirblobman.api.bstats.charts.SimplePie;
 import com.github.sirblobman.api.configuration.ConfigurationManager;
@@ -30,9 +25,16 @@ import com.github.sirblobman.api.update.UpdateManager;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.xseries.XMaterial;
 import com.github.sirblobman.sonic.screwdriver.command.CommandSonicScrewdriver;
+import com.github.sirblobman.sonic.screwdriver.configuration.SonicConfiguration;
 import com.github.sirblobman.sonic.screwdriver.listener.ListenerSonicScrewdriver;
 
 public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
+    private final SonicConfiguration configuration;
+
+    public SonicScrewdriverPlugin() {
+        this.configuration = new SonicConfiguration();
+    }
+
     @Override
     public void onLoad() {
         ConfigurationManager configurationManager = getConfigurationManager();
@@ -46,10 +48,13 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
     public void onEnable() {
         reloadConfig();
 
+        LanguageManager languageManager = getLanguageManager();
+        languageManager.onPluginEnable();
+
         registerCommands();
         registerListeners();
         registerUpdateChecker();
-        registerbStats();
+        register_bStats();
     }
 
     @Override
@@ -62,41 +67,31 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
         ConfigurationManager configurationManager = getConfigurationManager();
         configurationManager.reload("config.yml");
 
+        YamlConfiguration yamlConfiguration = configurationManager.get("config.yml");
+        SonicConfiguration configuration = getConfiguration();
+        configuration.load(yamlConfiguration);
+
         LanguageManager languageManager = getLanguageManager();
-        languageManager.reloadLanguageFiles();
+        languageManager.reloadLanguages();
+    }
+
+    public SonicConfiguration getConfiguration() {
+        return this.configuration;
     }
 
     public ItemStack getSonicScrewdriver(Player player) {
-        ConfigurationManager configurationManager = getConfigurationManager();
-        YamlConfiguration configuration = configurationManager.get("config.yml");
-        ConfigurationSection section = configuration.getConfigurationSection("item");
-        if(section == null) {
-            throw new IllegalStateException("Invalid Sonic Screwdriver Item In Config!");
-        }
-
-        String materialName = section.getString("material");
-        if(materialName == null) {
-            materialName = "BLAZE_ROD";
-        }
-
-        Optional<XMaterial> optionalMaterial = XMaterial.matchXMaterial(materialName);
-        XMaterial material = optionalMaterial.orElse(XMaterial.BLAZE_ROD);
+        SonicConfiguration configuration = getConfiguration();
+        XMaterial material = configuration.getItemMaterial();
         ItemBuilder builder = new ItemBuilder(material);
 
-        if(section.isInt("quantity")) {
-            int quantity = section.getInt("quantity", 1);
-            builder.withAmount(quantity);
-        }
+        int quantity = configuration.getItemQuantity();
+        builder.withAmount(quantity);
 
-        if(section.isInt("damage")) {
-            int damage = section.getInt("damage");
-            builder.withDamage(damage);
-        }
+        int damage = configuration.getItemDamage();
+        builder.withDamage(damage);
 
-        if(section.isInt("model")) {
-            int model = section.getInt("model");
-            builder.withModel(model);
-        }
+        Integer modelData = configuration.getItemCustomModelData();
+        builder.withModel(modelData);
 
         ItemStack item = builder.build();
         MultiVersionHandler multiVersionHandler = getMultiVersionHandler();
@@ -114,25 +109,14 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
 
     private Component getSonicScrewdriverDisplayName(Player player) {
         LanguageManager languageManager = getLanguageManager();
-        Component displayName = languageManager.getMessage(player, "sonic-screwdriver.display-name",
-                null);
+        Component displayName = languageManager.getMessage(player, "sonic-screwdriver.display-name");
         return ComponentHelper.wrapNoItalics(displayName);
     }
 
     private List<Component> getSonicScrewdriverLore(Player player) {
         LanguageManager languageManager = getLanguageManager();
-        MiniMessage miniMessage = languageManager.getMiniMessage();
-        String loreString = languageManager.getMessageString(player, "sonic-screwdriver.lore", null);
-        String[] loreSplit = loreString.split(Pattern.quote("\n"));
-
-        List<Component> lore = new ArrayList<>();
-        for (String lineString : loreSplit) {
-            Component component = miniMessage.deserialize(lineString);
-            Component line = ComponentHelper.wrapNoItalics(component);
-            lore.add(line);
-        }
-
-        return lore;
+        List<Component> loreList = languageManager.getMessageList(player, "sonic-screwdriver.lore");
+        return ComponentHelper.wrapNoItalics(loreList);
     }
 
     public boolean isSonicScrewdriver(ItemStack item) {
@@ -160,7 +144,7 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
         updateManager.addResource(this, 32859L);
     }
 
-    private void registerbStats() {
+    private void register_bStats() {
         Metrics metrics = new Metrics(this, 16256);
         metrics.addCustomChart(new SimplePie("selected_language", this::getDefaultLanguageCode));
     }
@@ -168,6 +152,6 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
     private String getDefaultLanguageCode() {
         LanguageManager languageManager = getLanguageManager();
         Language defaultLanguage = languageManager.getDefaultLanguage();
-        return (defaultLanguage == null ? "none" : defaultLanguage.getLanguageCode());
+        return (defaultLanguage == null ? "none" : defaultLanguage.getLanguageName());
     }
 }

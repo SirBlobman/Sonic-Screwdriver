@@ -23,7 +23,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
 
 import com.github.sirblobman.api.configuration.ConfigurationManager;
 import com.github.sirblobman.api.item.ItemBuilder;
@@ -31,6 +30,7 @@ import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.listener.PluginListener;
 import com.github.sirblobman.api.xseries.XMaterial;
 import com.github.sirblobman.sonic.screwdriver.SonicScrewdriverPlugin;
+import com.github.sirblobman.sonic.screwdriver.configuration.SonicConfiguration;
 
 public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdriverPlugin> {
     private final Set<XMaterial> instantBreakSet;
@@ -122,21 +122,21 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
     }
 
     private boolean hasPermission(Player player) {
-        ConfigurationManager configurationManager = getPlugin().getConfigurationManager();
-        YamlConfiguration configuration = configurationManager.get("config.yml");
-        String permissionName = configuration.getString("options.permission");
-        if(permissionName == null || permissionName.isEmpty()) {
+        SonicScrewdriverPlugin plugin = getPlugin();
+        SonicConfiguration configuration = plugin.getConfiguration();
+
+        Permission permission = configuration.getPermission();
+        if (permission == null) {
             return true;
         }
 
-        Permission permission = new Permission(permissionName, "Use Sonic Screwdriver Item", PermissionDefault.FALSE);
         return player.hasPermission(permission);
     }
 
     private void playAction(Player player) {
         SonicScrewdriverPlugin plugin = getPlugin();
         LanguageManager languageManager = plugin.getLanguageManager();
-        languageManager.sendActionBar(player, "action-bar", null);
+        languageManager.sendActionBar(player, "action-bar");
 
         ConfigurationManager configurationManager = plugin.getConfigurationManager();
         YamlConfiguration configuration = configurationManager.get("config.yml");
@@ -173,7 +173,7 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
     private void sendOverpoweredTntMessage(Entity entity) {
         SonicScrewdriverPlugin plugin = getPlugin();
         LanguageManager languageManager = plugin.getLanguageManager();
-        languageManager.sendMessage(entity, "overpowered-tnt-nearby", null);
+        languageManager.sendMessage(entity, "overpowered-tnt-nearby");
     }
 
     private void printDebug(String message) {

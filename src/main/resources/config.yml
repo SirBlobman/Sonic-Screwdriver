@@ -11,8 +11,8 @@ permission: "sonic.screwdriver"
 
 # What should the item look like for the sonic screwdriver?
 # If you know how to serialize ItemStacks you can use that as a value as well.
-# Default: Blaze Rod with name "&fSonic Screwdriver" and lore ["&5Doctor Who!", "&7&oAllons-y!!"]
 item:
   material: BLAZE_ROD
   quantity: 1
   damage: 0
+  custom-model-data: 14

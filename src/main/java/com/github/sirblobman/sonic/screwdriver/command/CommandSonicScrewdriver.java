@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.github.sirblobman.api.command.Command;
-import com.github.sirblobman.api.language.Replacer;
-import com.github.sirblobman.api.language.SimpleReplacer;
+import com.github.sirblobman.api.language.replacer.Replacer;
+import com.github.sirblobman.api.language.replacer.StringReplacer;
 import com.github.sirblobman.sonic.screwdriver.SonicScrewdriverPlugin;
 
 public final class CommandSonicScrewdriver extends Command {
@@ -35,7 +35,7 @@ public final class CommandSonicScrewdriver extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if(args.length == 0 && !(sender instanceof Player)) {
-            sendMessage(sender, "error.player-only", null);
+            sendMessage(sender, "error.player-only");
             return true;
         }
 
@@ -50,9 +50,9 @@ public final class CommandSonicScrewdriver extends Command {
         ItemStack item = plugin.getSonicScrewdriver(target);
         giveItems(target, item);
 
-        Replacer replacer = new SimpleReplacer("{target}", realTargetName);
+        Replacer replacer = new StringReplacer("{target}", realTargetName);
         sendMessage(sender, "successful-give", replacer);
-        sendMessage(target, "give-sonic", null);
+        sendMessage(target, "give-sonic");
         return true;
     }
 

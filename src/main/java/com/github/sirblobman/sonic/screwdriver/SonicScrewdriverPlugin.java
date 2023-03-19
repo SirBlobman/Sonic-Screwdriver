@@ -120,14 +120,21 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
     }
 
     public boolean isSonicScrewdriver(ItemStack item) {
+        printDebug("Detected method isSonicScrewdriver...");
+
         if(ItemUtility.isAir(item)) {
+            printDebug("Item is air, false.");
             return false;
         }
 
+        printDebug("Checking item NBT data...");
         MultiVersionHandler multiVersionHandler = getMultiVersionHandler();
         ItemHandler itemHandler = multiVersionHandler.getItemHandler();
         CustomNbtContainer customNbt = itemHandler.getCustomNbt(item);
-        return customNbt.getOrDefault("sonic-screwdriver", CustomNbtTypes.BOOLEAN, false);
+
+        Boolean value = customNbt.getOrDefault("sonic-screwdriver", CustomNbtTypes.BOOLEAN, false);
+        printDebug("NBT Result: " + value);
+        return value;
     }
 
     private void registerCommands() {

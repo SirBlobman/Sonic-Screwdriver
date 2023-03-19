@@ -44,7 +44,7 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
         this.instantBreakSet.addAll(glassSet);
     }
 
-    @EventHandler(priority=EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onInteract(PlayerInteractEvent e) {
         printDebug("Detected PlayerInteractEvent");
 

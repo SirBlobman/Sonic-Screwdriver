@@ -21,7 +21,7 @@ pipeline {
         stage("Gradle: Build") {
             steps {
                 withGradle {
-                    sh("./gradlew clean build --refresh-dependencies --no-daemon")
+                    sh("./gradlew --refresh-dependencies --no-daemon clean build")
                 }
             }
         }
@@ -30,18 +30,18 @@ pipeline {
     post {
         success {
             archiveArtifacts artifacts: 'build/libs/SonicScrewdriver-*.jar', fingerprint: true
-            archiveArtifacts artifacts: 'build/distributions/resourcepack-*.jar', fingerprint: true
+            archiveArtifacts artifacts: 'build/distributions/resourcepack-*.zip', fingerprint: true
         }
 
         always {
             script {
-                discordSend webhookURL: DISCORD_URL,
-                        title: "${env.JOB_NAME}",
-                        link: "${env.BUILD_URL}",
+                discordSend webhookURL: DISCORD_URL, title: "Sonic Screwdriver", link: "${env.BUILD_URL}",
                         result: currentBuild.currentResult,
-                        description: "**Build:** ${env.BUILD_NUMBER}\n**Status:** ${currentBuild.currentResult}",
-                        enableArtifactsList: false,
-                        showChangeset: true
+                        description: """\
+                            **Branch:** ${env.GIT_BRANCH}
+                            **Build:** ${env.BUILD_NUMBER}
+                            **Status:** ${currentBuild.currentResult}""".stripIndent(),
+                        enableArtifactsList: false, showChangeset: true
             }
         }
     }

@@ -16,6 +16,7 @@ sonic-screwdriver:
     - "<dark_purple>Doctor Who!</dark_purple>"
     - "<gray><italic>Allons-y!!</italic></gray>"
   sound:
-    name: "custom:sonic.screwdriver"
-    volume: "1.0"
-    pitch: "1.0"
+    sound: "sonic:sonic.screwdriver"
+    category: "player"
+    volume: 1.0
+    pitch: 2.0

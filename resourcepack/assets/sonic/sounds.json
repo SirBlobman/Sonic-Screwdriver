@@ -1,0 +1,12 @@
+{
+  "sonic.screwdriver": {
+    "subtitle": "Sonic Screwdriver",
+    "sounds": [
+      {
+        "name": "sonic:sonic_screwdriver",
+        "volume": 1.0,
+        "pitch": 0.5
+      }
+    ]
+  }
+}

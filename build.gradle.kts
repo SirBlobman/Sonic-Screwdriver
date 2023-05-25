@@ -1,62 +1,111 @@
-val baseVersion = findProperty("version.base") ?: "invalid"
-val betaString = ((findProperty("version.beta") ?: "false") as String)
-val jenkinsBuildNumber = System.getenv("BUILD_NUMBER") ?: "Unofficial"
+val baseVersion = fetchProperty("version.base", "invalid")
+val betaString = fetchProperty("version.beta", "false")
+val jenkinsBuildNumber = fetchEnv("BUILD_NUMBER", null, "Unofficial")
 
 val betaBoolean = betaString.toBoolean()
 val betaVersion = if (betaBoolean) "Beta-" else ""
-val calculatedVersion = "$baseVersion.$betaVersion$jenkinsBuildNumber"
+version = "$baseVersion.$betaVersion$jenkinsBuildNumber"
+
+fun fetchProperty(propertyName: String, defaultValue: String): String {
+    val found = findProperty(propertyName)
+    if (found != null) {
+        return found.toString()
+    }
+
+    return defaultValue
+}
+
+fun fetchEnv(envName: String, propertyName: String?, defaultValue: String): String {
+    val found = System.getenv(envName)
+    if (found != null) {
+        return found
+    }
+
+    if (propertyName != null) {
+        return fetchProperty(propertyName, defaultValue)
+    }
+
+    return defaultValue
+}
 
 plugins {
     id("java")
+    id("distribution")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
 repositories {
     mavenCentral()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    maven("https://oss.sonatype.org/content/repositories/snapshots")
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
     maven("https://nexus.sirblobman.xyz/public/")
 }
 
 dependencies {
     compileOnly("org.jetbrains:annotations:24.0.1")
-    compileOnly("org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT")
-    compileOnly("com.github.sirblobman.api:core:2.7-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
+    compileOnly("com.github.sirblobman.api:core:2.9-SNAPSHOT")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_16
-    targetCompatibility = JavaVersion.VERSION_16
+distributions {
+    main {
+        contents {
+            into("/") {
+                from("resourcepack")
+            }
+        }
+    }
 }
 
 tasks {
     named<Jar>("jar") {
-        archiveFileName.set("SonicScrewdriver-$calculatedVersion.jar")
+        archiveBaseName.set("SonicScrewdriver")
+    }
+
+    named("distTar") {
+        enabled = false
+    }
+
+    named<Zip>("distZip") {
+        isPreserveFileTimestamps = true
+        archiveBaseName.set("resourcepack")
     }
 
     withType<JavaCompile> {
         options.encoding = "UTF-8"
+        options.compilerArgs.add("-Xlint:deprecation")
+        options.compilerArgs.add("-Xlint:unchecked")
     }
 
     withType<Javadoc> {
         options.encoding = "UTF-8"
+        val standardOptions = options as StandardJavadocDocletOptions
+        standardOptions.addStringOption("Xdoclint:none", "-quiet")
     }
 
     processResources {
-        val pluginName = (findProperty("bukkit.plugin.name") ?: "") as String
-        val pluginPrefix = (findProperty("bukkit.plugin.prefix") ?: "") as String
-        val pluginDescription = (findProperty("bukkit.plugin.description") ?: "") as String
-        val pluginWebsite = (findProperty("bukkit.plugin.website") ?: "") as String
-        val pluginMainClass = (findProperty("bukkit.plugin.main") ?: "") as String
+        val pluginName = fetchProperty("bukkit.plugin.name", "")
+        val pluginPrefix = fetchProperty("bukkit.plugin.prefix", "")
+        val pluginDescription = fetchProperty("bukkit.plugin.description", "")
+        val pluginWebsite = fetchProperty("bukkit.plugin.website", "")
+        val pluginMainClass = fetchProperty("bukkit.plugin.main", "")
 
         filesMatching("plugin.yml") {
-            expand(mapOf(
-                "pluginName" to pluginName,
-                "pluginPrefix" to pluginPrefix,
-                "pluginDescription" to pluginDescription,
-                "pluginWebsite" to pluginWebsite,
-                "pluginMainClass" to pluginMainClass,
-                "pluginVersion" to calculatedVersion
-            ))
+            expand(
+                mapOf(
+                    "pluginName" to pluginName,
+                    "pluginPrefix" to pluginPrefix,
+                    "pluginDescription" to pluginDescription,
+                    "pluginWebsite" to pluginWebsite,
+                    "pluginMainClass" to pluginMainClass,
+                    "pluginVersion" to version
+                )
+            )
         }
     }
 }

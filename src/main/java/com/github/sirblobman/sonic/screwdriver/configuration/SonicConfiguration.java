@@ -2,14 +2,15 @@ package com.github.sirblobman.sonic.screwdriver.configuration;
 
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
 import com.github.sirblobman.api.configuration.IConfigurable;
-import com.github.sirblobman.api.xseries.XMaterial;
-
-import org.jetbrains.annotations.Nullable;
+import com.github.sirblobman.api.shaded.xseries.XMaterial;
 
 public final class SonicConfiguration implements IConfigurable {
     private String permissionName;
@@ -31,7 +32,7 @@ public final class SonicConfiguration implements IConfigurable {
     }
 
     @Override
-    public void load(ConfigurationSection config) {
+    public void load(@NotNull ConfigurationSection config) {
         setPermissionName(config.getString("permission", "sonic.screwdriver"));
 
         ConfigurationSection itemSection = getOrCreateSection(config, "item");
@@ -49,17 +50,16 @@ public final class SonicConfiguration implements IConfigurable {
         }
     }
 
-    public String getPermissionName() {
+    public @Nullable String getPermissionName() {
         return this.permissionName;
     }
 
-    public void setPermissionName(String permissionName) {
+    public void setPermissionName(@Nullable String permissionName) {
         this.permissionName = permissionName;
         this.permission = null;
     }
 
-    @Nullable
-    public Permission getPermission() {
+    public @Nullable Permission getPermission() {
         if (this.permission != null) {
             return this.permission;
         }
@@ -73,11 +73,11 @@ public final class SonicConfiguration implements IConfigurable {
         return (this.permission = new Permission(permissionName, description, PermissionDefault.FALSE));
     }
 
-    public XMaterial getItemMaterial() {
+    public @NotNull XMaterial getItemMaterial() {
         return this.itemMaterial;
     }
 
-    public void setItemMaterial(XMaterial itemMaterial) {
+    public void setItemMaterial(@NotNull XMaterial itemMaterial) {
         this.itemMaterial = itemMaterial;
     }
 
@@ -97,8 +97,7 @@ public final class SonicConfiguration implements IConfigurable {
         this.itemDamage = itemDamage;
     }
 
-    @Nullable
-    public Integer getItemCustomModelData() {
+    public @Nullable Integer getItemCustomModelData() {
         return this.itemCustomModelData;
     }
 

@@ -4,6 +4,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -13,10 +15,10 @@ import org.bukkit.block.data.Bisected.Half;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Openable;
 import org.bukkit.block.data.type.Door;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
@@ -24,18 +26,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 
-import com.github.sirblobman.api.configuration.ConfigurationManager;
 import com.github.sirblobman.api.item.ItemBuilder;
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.listener.PluginListener;
-import com.github.sirblobman.api.xseries.XMaterial;
 import com.github.sirblobman.sonic.screwdriver.SonicScrewdriverPlugin;
 import com.github.sirblobman.sonic.screwdriver.configuration.SonicConfiguration;
+import com.github.sirblobman.api.shaded.xseries.XMaterial;
 
 public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdriverPlugin> {
     private final Set<XMaterial> instantBreakSet;
 
-    public ListenerSonicScrewdriver(SonicScrewdriverPlugin plugin) {
+    public ListenerSonicScrewdriver(@NotNull SonicScrewdriverPlugin plugin) {
         super(plugin);
         this.instantBreakSet = EnumSet.of(XMaterial.COBWEB, XMaterial.LADDER, XMaterial.VINE);
 
@@ -49,42 +50,41 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
         printDebug("Detected PlayerInteractEvent");
 
         Action action = e.getAction();
-        if(action != Action.RIGHT_CLICK_BLOCK) {
+        if (action != Action.RIGHT_CLICK_BLOCK) {
             printDebug("Action is not RIGHT_CLICK_BLOCK, ignoring.");
             return;
         }
 
         Block block = e.getClickedBlock();
-        if(block == null) {
+        if (block == null) {
             printDebug("Clicked block is null, ignoring.");
             return;
         }
 
         ItemStack item = e.getItem();
         SonicScrewdriverPlugin plugin = getPlugin();
-        if(!plugin.isSonicScrewdriver(item)) {
+        if (!plugin.isSonicScrewdriver(item)) {
             printDebug("Item is not sonic screwdriver, ignoring.");
             return;
         }
 
+        e.setUseItemInHand(Result.DENY);
+
         Player player = e.getPlayer();
-        if(!hasPermission(player)) {
+        if (!hasPermission(player)) {
             printDebug("Player does not have permission to use the item, ignoring.");
             return;
         }
 
-        e.setCancelled(true);
         playAction(player);
-        printDebug("Cancelled event and played action for player.");
-
         Block aboveBlock = block.getRelative(BlockFace.UP);
         Block belowBlock = block.getRelative(BlockFace.DOWN);
         BlockData blockData = block.getBlockData();
 
-        if(blockData instanceof Openable openable) {
-            if(openable instanceof Door door) {
+        if (blockData instanceof Openable openable) {
+            if (openable instanceof Door door) {
                 Half half = door.getHalf();
-                if(half == Half.TOP) {
+                if (half == Half.TOP) {
                     Door doorBottom = (Door) belowBlock.getBlockData();
                     doorBottom.setOpen(!doorBottom.isOpen());
                     belowBlock.setBlockData(doorBottom);
@@ -98,7 +98,7 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
         }
 
         Material blockType = block.getType();
-        if(blockType == Material.TNT) {
+        if (blockType == Material.TNT) {
             Location location = block.getLocation();
             block.setType(Material.AIR, true);
             spawnOverpoweredTNT(location);
@@ -106,12 +106,12 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
         }
 
         Material aboveType = aboveBlock.getType();
-        if(blockType == Material.OBSIDIAN && aboveType == Material.AIR) {
+        if (blockType == Material.OBSIDIAN && aboveType == Material.AIR) {
             aboveBlock.setType(Material.FIRE, true);
             return;
         }
 
-        if(canInstantlyBreak(blockType)) {
+        if (canInstantlyBreak(blockType)) {
             ItemStack drop = new ItemBuilder(blockType).withAmount(1).build();
             World world = block.getWorld();
             Location location = block.getLocation();
@@ -121,7 +121,7 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
         }
     }
 
-    private boolean hasPermission(Player player) {
+    private boolean hasPermission(@NotNull Player player) {
         SonicScrewdriverPlugin plugin = getPlugin();
         SonicConfiguration configuration = plugin.getConfiguration();
 
@@ -133,28 +133,21 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
         return player.hasPermission(permission);
     }
 
-    private void playAction(Player player) {
+    private void playAction(@NotNull Player player) {
         SonicScrewdriverPlugin plugin = getPlugin();
         LanguageManager languageManager = plugin.getLanguageManager();
         languageManager.sendActionBar(player, "action-bar");
-
-        ConfigurationManager configurationManager = plugin.getConfigurationManager();
-        YamlConfiguration configuration = configurationManager.get("config.yml");
-        String soundName = configuration.getString("options.sound");
-        if(soundName != null && !soundName.isEmpty()) {
-            Location location = player.getLocation();
-            player.playSound(location, soundName, 1.0F, 1.0F);
-        }
+        languageManager.sendSound(player, "sonic-screwdriver.sound");
     }
 
-    private boolean canInstantlyBreak(Material blockType) {
+    private boolean canInstantlyBreak(@NotNull Material blockType) {
         XMaterial material = XMaterial.matchXMaterial(blockType);
         return this.instantBreakSet.contains(material);
     }
 
-    private void spawnOverpoweredTNT(Location location) {
+    private void spawnOverpoweredTNT(@NotNull Location location) {
         World world = location.getWorld();
-        if(world == null) {
+        if (world == null) {
             return;
         }
 
@@ -170,13 +163,13 @@ public final class ListenerSonicScrewdriver extends PluginListener<SonicScrewdri
         }
     }
 
-    private void sendOverpoweredTntMessage(Entity entity) {
+    private void sendOverpoweredTntMessage(@NotNull Entity entity) {
         SonicScrewdriverPlugin plugin = getPlugin();
         LanguageManager languageManager = plugin.getLanguageManager();
         languageManager.sendMessage(entity, "overpowered-tnt-nearby");
     }
 
-    private void printDebug(String message) {
+    private void printDebug(@NotNull String message) {
         SonicScrewdriverPlugin plugin = getPlugin();
         plugin.printDebug(message);
     }

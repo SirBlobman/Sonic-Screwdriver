@@ -5,7 +5,9 @@ website: "${pluginWebsite}"
 
 main: "${pluginMainClass}"
 version: "${pluginVersion}"
-api-version: "1.17"
+api-version: "1.18"
+
+folia-supported: true
 
 authors:
   - "SirBlobman"

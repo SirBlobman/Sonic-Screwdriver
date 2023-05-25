@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +18,7 @@ import com.github.sirblobman.sonic.screwdriver.SonicScrewdriverPlugin;
 public final class CommandSonicScrewdriver extends Command {
     private final SonicScrewdriverPlugin plugin;
 
-    public CommandSonicScrewdriver(SonicScrewdriverPlugin plugin) {
+    public CommandSonicScrewdriver(@NotNull SonicScrewdriverPlugin plugin) {
         super(plugin, "sonic-screwdriver");
         setPermissionName("sonic.screwdriver.give");
         this.plugin = plugin;
@@ -24,7 +26,7 @@ public final class CommandSonicScrewdriver extends Command {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        if(args.length == 1) {
+        if (args.length == 1) {
             Set<String> valueSet = getOnlinePlayerNames();
             return getMatching(args[0], valueSet);
         }
@@ -34,14 +36,14 @@ public final class CommandSonicScrewdriver extends Command {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if(args.length == 0 && !(sender instanceof Player)) {
+        if (args.length == 0 && !(sender instanceof Player)) {
             sendMessage(sender, "error.player-only");
             return true;
         }
 
         String targetName = (args.length < 1 ? sender.getName() : args[0]);
         Player target = findTarget(sender, targetName);
-        if(target == null) {
+        if (target == null) {
             return true;
         }
 

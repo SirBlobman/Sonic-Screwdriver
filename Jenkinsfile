@@ -30,6 +30,7 @@ pipeline {
     post {
         success {
             archiveArtifacts artifacts: 'build/libs/SonicScrewdriver-*.jar', fingerprint: true
+            archiveArtifacts artifacts: 'build/distributions/resourcepack-*.jar', fingerprint: true
         }
 
         always {

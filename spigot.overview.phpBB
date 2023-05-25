@@ -1,65 +1,59 @@
 [SIZE=5][B]Supported Spigot Versions:[/B][/SIZE]
-1.18.2, 1.19
+1.18.2, 1.19.4
 
-[SIZE=5][COLOR=#FF0000][B]Description:[/B][/COLOR][/SIZE]
-Sonic Screwdriver is a plugin that adds a very powerful tool modeled after the sonic screwdriver from the 'Doctor Who' TV series.
+[SIZE=5][B]Description:[/B][/SIZE]
+Sonic Screwdriver adds a very powerful tool modeled after the sonic screwdriver from the 'Doctor Who' TV series.
 
-[SIZE=5][B][COLOR=#FF0000]Dependencies:[/COLOR][/B][/SIZE]
+[SIZE=5][B]Dependencies:[/B][/SIZE]
 [LIST]
-[*][URL='https://www.spigotmc.org/resources/83189/']SirBlobmanCore[/URL]
+[*][URL='https://www.spigotmc.org/resources/83189/']BlueSlimeCore[/URL]
 [/LIST]
 
-[SIZE=5][COLOR=#FF0000][B]Features:[/B][/COLOR][/SIZE]
+[SIZE=5][B]Features:[/B][/SIZE]
 [LIST]
-[*]Ignite TNT to create a gigantic explosion
+[*]Ignite TNT to create a gigantic explosion.
 [*]Light nether portals.
 [*]Instantly break certain block types. (glass, vines, ladders, and webs)
 [*]Open iron doors and trapdoors without redstone.
 [*]Customizable sound and action bar.
 [/LIST]
 
-[SIZE=5][COLOR=#FF0000][B]Configuration:[/B][/COLOR][/SIZE]
-[SPOILER='config.yml']
-[CODE=YAML]
-# Configuration Settings
-options:
-  # What sound packet should be sent to the player when they use a sonic screwdriver?
-  # If you have a resource pack with custom sounds you can also use those.
-  # Default: "sonic.screwdriver"
-  sound: "sonic.screwdriver"
+[SIZE=5][B]Configuration:[/B][/SIZE]
+[SPOILER='config.yml'][CODE=YAML]
+## Configuration Settings for Sonic Screwdriver
 
-  # Which permission will be required to use the sonic screwdriver item?
-  # This permission is NOT given to OPs by default.
-  # Default: "sonic.screwdriver"
-  permission: "sonic.screwdriver"
+# Should Sonic Screwdriver print out extra log messages?
+# This option is helpful when reporting bugs or errors.
+debug-mode: false
 
-  # What should the item look like for the sonic screwdriver?
-  # If you know how to serialize ItemStacks you can use that as a value as well.
-  # Default: Blaze Rod with name "&fSonic Screwdriver" and lore ["&5Doctor Who!", "&7&oAllons-y!!"]
-  item:
-    material: BLAZE_ROD
-    quantity: 1
-    damage: 0
-    display-name: "&fSonic Screwdriver"
-    lore:
-      - "&5Doctor Who!"
-      - "&7&oAllons-y!!"
+# Which permission will be required to use the sonic screwdriver item?
+# This permission is NOT given to OPs by default.
+# Default: "sonic.screwdriver"
+permission: "sonic.screwdriver"
 
-[/CODE]
-[/SPOILER]
+# What should the item look like for the sonic screwdriver?
+# If you know how to serialize ItemStacks you can use that as a value as well.
+item:
+  material: BLAZE_ROD
+  quantity: 1
+  damage: 0
+  custom-model-data: 14
+[/CODE][/SPOILER]
 
-[SIZE=5][COLOR=#FF0000][B]Commands and Permissions:[/B][/COLOR][/SIZE]
+[SIZE=5][B]Commands and Permissions:[/B][/SIZE]
 [LIST]
 [*][B]/sonic-screwdriver [player][/B]: Give a sonic screwdriver to yourself or another player.
 [*][B]sonic.screwdriver[/B]: Allow a player to use the sonic screwdriver item. (configurable)
 [/LIST]
 
-[SIZE=5][COLOR=#FF0000][B]Video Review:[/B][/COLOR][/SIZE]
+[SIZE=5][B]Video Review:[/B][/SIZE]
 [MEDIA=YouTube]DMhb_GpeWcI[/MEDIA]
 
-[SIZE=5][B][COLOR=#FF0000]Help and Support:[/COLOR][/B][/SIZE]
-Click the image to join my discord for support. You can also join if you have feature requests or if you just want to chat with other users.
+[SIZE=5][B]Help and Support:[/B][/SIZE]
+Click the image to join my discord for support.
+You can also join if you have feature requests or if you just want to chat with other users.
 [URL='https://discord.gg/XMq2agT'][IMG]https://discordapp.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png[/IMG][/URL]
 
-[SIZE=5][B][COLOR=#FF0000]Extra Information:[/COLOR][/B][/SIZE]
-Please do not use a review to leave bug reports or errors. I am not able to help you through a review.
+[SIZE=5][B]Extra Information:[/B][/SIZE]
+Please do not use a review to leave bug reports or errors.
+I am not able to help you through a review.

@@ -2,14 +2,14 @@ package com.github.sirblobman.sonic.screwdriver;
 
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.sirblobman.api.adventure.adventure.text.Component;
-import com.github.sirblobman.api.bstats.bukkit.Metrics;
-import com.github.sirblobman.api.bstats.charts.SimplePie;
 import com.github.sirblobman.api.configuration.ConfigurationManager;
 import com.github.sirblobman.api.core.CorePlugin;
 import com.github.sirblobman.api.item.ItemBuilder;
@@ -21,12 +21,15 @@ import com.github.sirblobman.api.nbt.CustomNbtTypes;
 import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
 import com.github.sirblobman.api.plugin.ConfigurablePlugin;
-import com.github.sirblobman.api.update.UpdateManager;
+import com.github.sirblobman.api.update.SpigotUpdateManager;
 import com.github.sirblobman.api.utility.ItemUtility;
-import com.github.sirblobman.api.xseries.XMaterial;
 import com.github.sirblobman.sonic.screwdriver.command.CommandSonicScrewdriver;
 import com.github.sirblobman.sonic.screwdriver.configuration.SonicConfiguration;
 import com.github.sirblobman.sonic.screwdriver.listener.ListenerSonicScrewdriver;
+import com.github.sirblobman.api.shaded.adventure.text.Component;
+import com.github.sirblobman.api.shaded.bstats.bukkit.Metrics;
+import com.github.sirblobman.api.shaded.bstats.charts.SimplePie;
+import com.github.sirblobman.api.shaded.xseries.XMaterial;
 
 public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
     private final SonicConfiguration configuration;
@@ -75,11 +78,11 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
         languageManager.reloadLanguages();
     }
 
-    public SonicConfiguration getConfiguration() {
+    public @NotNull SonicConfiguration getConfiguration() {
         return this.configuration;
     }
 
-    public ItemStack getSonicScrewdriver(Player player) {
+    public @NotNull ItemStack getSonicScrewdriver(@NotNull Player player) {
         SonicConfiguration configuration = getConfiguration();
         XMaterial material = configuration.getItemMaterial();
         ItemBuilder builder = new ItemBuilder(material);
@@ -107,22 +110,22 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
         return itemHandler.setCustomNbt(item, customNbt);
     }
 
-    private Component getSonicScrewdriverDisplayName(Player player) {
+    private @NotNull Component getSonicScrewdriverDisplayName(@NotNull Player player) {
         LanguageManager languageManager = getLanguageManager();
         Component displayName = languageManager.getMessage(player, "sonic-screwdriver.display-name");
         return ComponentHelper.wrapNoItalics(displayName);
     }
 
-    private List<Component> getSonicScrewdriverLore(Player player) {
+    private @NotNull List<Component> getSonicScrewdriverLore(@NotNull Player player) {
         LanguageManager languageManager = getLanguageManager();
         List<Component> loreList = languageManager.getMessageList(player, "sonic-screwdriver.lore");
         return ComponentHelper.wrapNoItalics(loreList);
     }
 
-    public boolean isSonicScrewdriver(ItemStack item) {
+    public boolean isSonicScrewdriver(@Nullable ItemStack item) {
         printDebug("Detected method isSonicScrewdriver...");
 
-        if(ItemUtility.isAir(item)) {
+        if (ItemUtility.isAir(item)) {
             printDebug("Item is air, false.");
             return false;
         }
@@ -132,7 +135,7 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
         ItemHandler itemHandler = multiVersionHandler.getItemHandler();
         CustomNbtContainer customNbt = itemHandler.getCustomNbt(item);
 
-        Boolean value = customNbt.getOrDefault("sonic-screwdriver", CustomNbtTypes.BOOLEAN, false);
+        boolean value = customNbt.getOrDefault("sonic-screwdriver", CustomNbtTypes.BOOLEAN, false);
         printDebug("NBT Result: " + value);
         return value;
     }
@@ -147,7 +150,7 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
 
     private void registerUpdateChecker() {
         CorePlugin corePlugin = JavaPlugin.getPlugin(CorePlugin.class);
-        UpdateManager updateManager = corePlugin.getUpdateManager();
+        SpigotUpdateManager updateManager = corePlugin.getSpigotUpdateManager();
         updateManager.addResource(this, 32859L);
     }
 
@@ -156,7 +159,7 @@ public final class SonicScrewdriverPlugin extends ConfigurablePlugin {
         metrics.addCustomChart(new SimplePie("selected_language", this::getDefaultLanguageCode));
     }
 
-    private String getDefaultLanguageCode() {
+    private @NotNull String getDefaultLanguageCode() {
         LanguageManager languageManager = getLanguageManager();
         Language defaultLanguage = languageManager.getDefaultLanguage();
         return (defaultLanguage == null ? "none" : defaultLanguage.getLanguageName());

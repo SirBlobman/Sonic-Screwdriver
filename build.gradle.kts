@@ -1,3 +1,7 @@
+val apiVersion = fetchProperty("version.api", "invalid")
+val mavenUsername = fetchEnv("MAVEN_DEPLOY_USR", "maven.username.sirblobman", "")
+val mavenPassword = fetchEnv("MAVEN_DEPLOY_PSW", "maven.password.sirblobman", "")
+
 val baseVersion = fetchProperty("version.base", "invalid")
 val betaString = fetchProperty("version.beta", "false")
 val jenkinsBuildNumber = fetchEnv("BUILD_NUMBER", null, "Unofficial")
@@ -34,22 +38,20 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 repositories {
     mavenCentral()
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    maven("https://oss.sonatype.org/content/repositories/snapshots/")
+    maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://nexus.sirblobman.xyz/public/")
 }
 
 dependencies {
-    compileOnly("org.jetbrains:annotations:24.0.1")
-    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
-    compileOnly("com.github.sirblobman.api:core:2.9-SNAPSHOT")
+    compileOnly("org.jetbrains:annotations:26.1.0") // JetBrains Annotations
+    compileOnly("io.papermc.paper:paper-api:26.2.build.+") // PaperMC API
 }
 
 distributions {
@@ -88,24 +90,12 @@ tasks {
         standardOptions.addStringOption("Xdoclint:none", "-quiet")
     }
 
-    processResources {
-        val pluginName = fetchProperty("bukkit.plugin.name", "")
-        val pluginPrefix = fetchProperty("bukkit.plugin.prefix", "")
-        val pluginDescription = fetchProperty("bukkit.plugin.description", "")
-        val pluginWebsite = fetchProperty("bukkit.plugin.website", "")
-        val pluginMainClass = fetchProperty("bukkit.plugin.main", "")
+    named<ProcessResources>("processResources") {
+        val pluginVersion = providers.provider { project.version.toString() }
+        inputs.property("version", pluginVersion)
 
-        filesMatching("plugin.yml") {
-            expand(
-                mapOf(
-                    "pluginName" to pluginName,
-                    "pluginPrefix" to pluginPrefix,
-                    "pluginDescription" to pluginDescription,
-                    "pluginWebsite" to pluginWebsite,
-                    "pluginMainClass" to pluginMainClass,
-                    "pluginVersion" to version
-                )
-            )
+        filesMatching("paper-plugin.yml") {
+            expand(mapOf("version" to pluginVersion.get()))
         }
     }
 }

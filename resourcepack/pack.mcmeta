@@ -1,6 +1,6 @@
 {
   "pack": {
-    "pack_format": 13,
+    "min_format": 107.1,
     "description": {
       "text": "Sonic Screwdriver Pack"
     }

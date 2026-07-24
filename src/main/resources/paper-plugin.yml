@@ -1,0 +1,12 @@
+name: "SonicScrewdriver"
+prefix: "Sonic Screwdriver"
+description: "A very powerful tool modeled after the sonic screwdriver from the 'Doctor Who' TV series."
+website: "https://hangar.papermc.io/SirBlobman/Sonic-Screwdriver"
+
+main: "com.github.sirblobman.sonic.screwdriver.SonicPlugin"
+version: "${version}"
+api-version: "26.2"
+folia-supported: true
+
+authors:
+  - "SirBlobman"

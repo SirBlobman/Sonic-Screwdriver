@@ -4,18 +4,15 @@ A very powerful tool modeled after the sonic screwdriver from the 'Doctor Who' T
 
 ## Dependencies
 
-- Java 17
-- [Spigot](https://spigotmc.org/), [Paper](https://papermc.io/downloads/paper)
-  or [Folia](https://papermc.io/software/folia) 1.18.2 - 1.19.4
-- [BlueSlimeCore](https://jenkins.sirblobman.xyz/job/SirBlobman/job/BlueSlimeCore/) 2.9.0 or higher.
+- Java 25
+- [Paper](https://papermc.io/downloads/paper) or [Folia](https://papermc.io/software/folia) 26.2 or higher.
 
 ## Downloads
 
-- [SpigotMC](https://www.spigotmc.org/resources/sonic-screwdriver.32859/)
 - [Hangar](https://hangar.papermc.io/SirBlobman/Sonic-Screwdriver)
 - [Jenkins Beta Builds](https://jenkins.sirblobman.xyz/job/SirBlobman/job/Sonic-Screwdriver/job/main/)
 
 ### Optional Resource Pack
 
-The resource pack is made for 1.19.4 and enhances your experience while playing with the sonic screwdriver item.
+The resource pack is made for 26.2 and enhances your experience while playing with the sonic screwdriver item.
 You can download it from [my website](https://resources.sirblobman.xyz/SonicScrewdriver.zip).

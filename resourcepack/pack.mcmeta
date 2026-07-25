@@ -1,8 +1,10 @@
 {
   "pack": {
-    "min_format": 107.1,
+    "min_format": 88.0,
+    "max_format": 88.0,
     "description": {
-      "text": "Sonic Screwdriver Pack"
+      "text": "Sonic Screwdriver Pack",
+      "color": "#004B87"
     }
   }
 }

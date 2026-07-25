@@ -1,0 +1,19 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:custom_model_data",
+    "cases": [
+      {
+        "when": "sonic.screwdriver",
+        "model": {
+          "type": "minecraft:model",
+          "model": "sonic:item/sonic_screwdriver"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/blaze_rod"
+    }
+  }
+}

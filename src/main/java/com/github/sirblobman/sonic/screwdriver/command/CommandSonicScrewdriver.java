@@ -33,7 +33,7 @@ public final class CommandSonicScrewdriver {
         reloadCommand.executes(new CommandSonicScrewdriverReload(plugin));
 
         LiteralArgumentBuilder<CommandSourceStack> giveCommand = Commands.literal("give");
-        giveCommand.requires(new PermissionRequirement("onic.screwdriver.command.reload.give"));
+        giveCommand.requires(new PermissionRequirement("sonic.screwdriver.command.reload.give"));
         giveCommand.then(Commands.argument("player", ArgumentTypes.player())
                 .executes(new CommandSonicScrewdriverGive(plugin)));
 

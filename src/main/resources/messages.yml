@@ -1,0 +1,5 @@
+action-bar: "<white>Whirr!</white>"
+give-sonic-target: "<green>You are now The Doctor!</green>"
+give-sonic-sender: "<green>Successfully gave a sonic screwdriver to <gray>{target}</gray>.</green>"
+give-sonic-fail: "<red>Unable to give a sonic screwdriver to <gray>{target}</gray> because their inventory is full.</red>"
+overpowered-tnt-nearby: "<red><bold>As The Doctor would say... RUN!!!!</bold></red>"

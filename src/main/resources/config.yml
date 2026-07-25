@@ -7,9 +7,17 @@ debug-mode: false
 # Which permission will be required to use the sonic screwdriver item?
 # This permission is NOT given to OPs by default.
 permission:
+  enabled: true
   name: "sonic.screwdriver"
   description: "Grants the ability to use sonic screwdriver items."
   default: OP
+
+sound:
+  enabled: true
+  sound: "sonic:sonic.screwdriver"
+  category: "player"
+  volume: 1.0
+  pitch: 2.0
 
 # What should the item look like for the sonic screwdriver?
 # If you know how to serialize ItemStacks you can use that as a value as well.
@@ -26,14 +34,19 @@ abilities:
   light-nether-portal: true
   instant-break-blocks: true
   overpowered-tnt: true
+  enhance-creepers: true
 
 instant-break-block-types:
   - COBWEB
   - LADDER
   - VINE
 
-sound:
-  sound: "sonic:sonic.screwdriver"
-  category: "player"
-  volume: 1.0
-  pitch: 2.0
+overpowered-tnt:
+  message-radius: 20.0
+  explosion-yield: 100.0
+  incendiary: true
+  fuse-ticks: 500
+
+enhanced-creeper:
+  powered: true
+  explosion-radius: 100

@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 val apiVersion = fetchProperty("version.api", "invalid")
 val mavenUsername = fetchEnv("MAVEN_DEPLOY_USR", "maven.username.sirblobman", "")
 val mavenPassword = fetchEnv("MAVEN_DEPLOY_PSW", "maven.password.sirblobman", "")
@@ -35,6 +37,7 @@ fun fetchEnv(envName: String, propertyName: String?, defaultValue: String): Stri
 plugins {
     id("java")
     id("distribution")
+    id("com.gradleup.shadow") version "9.3.1"
 }
 
 java {
@@ -52,6 +55,7 @@ repositories {
 dependencies {
     compileOnly("org.jetbrains:annotations:26.1.0") // JetBrains Annotations
     compileOnly("io.papermc.paper:paper-api:26.2.build.+") // PaperMC API
+    implementation("org.bstats:bstats-bukkit:3.2.1") // bStats Bukkit
 }
 
 distributions {
@@ -66,7 +70,7 @@ distributions {
 
 tasks {
     named<Jar>("jar") {
-        archiveBaseName.set("SonicScrewdriver")
+        enabled = false
     }
 
     named("distTar") {
@@ -76,6 +80,12 @@ tasks {
     named<Zip>("distZip") {
         isPreserveFileTimestamps = true
         archiveBaseName.set("resourcepack")
+    }
+
+    named<ShadowJar>("shadowJar") {
+        archiveBaseName.set("SonicScrewdriver")
+        archiveClassifier.set(null)
+        relocate("org.bstats", "com.github.sirblobman.sonic.screwdriver.bstats")
     }
 
     withType<JavaCompile> {

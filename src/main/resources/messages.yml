@@ -1,5 +1,14 @@
+# Displayed in the action bar whenever a Sonic Screwdriver ability is used successfully.
 action-bar: "<white>Whirr!</white>"
+
+# Sent to a player after they receive a Sonic Screwdriver.
 give-sonic-target: "<green>You are now The Doctor!</green>"
+
+# Sent to the command sender after giving a Sonic Screwdriver to another player.
 give-sonic-sender: "<green>Successfully gave a sonic screwdriver to <gray>{target}</gray>.</green>"
+
+# Sent to the command sender if the target player's inventory is full.
 give-sonic-fail: "<red>Unable to give a sonic screwdriver to <gray>{target}</gray> because their inventory is full.</red>"
+
+# Sent to nearby players when an overpowered TNT is ignited.
 overpowered-tnt-nearby: "<red><bold>As The Doctor would say... RUN!!!!</bold></red>"

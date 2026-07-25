@@ -1,52 +1,104 @@
 ## Configuration Settings for Sonic Screwdriver
 
-# Should Sonic Screwdriver print out extra log messages?
-# This option is helpful when reporting bugs or errors.
+# Enable additional debug logging.
+# This can help diagnose problems when reporting bugs.
 debug-mode: false
 
-# Which permission will be required to use the sonic screwdriver item?
-# This permission is NOT given to OPs by default.
+# Configure the permission required to use the Sonic Screwdriver.
 permission:
+  # If disabled, all players may use the Sonic Screwdriver.
   enabled: true
+
+  # Permission node required to use the item.
   name: "sonic.screwdriver"
-  description: "Grants the ability to use sonic screwdriver items."
+
+  # Description shown by permission management plugins such as LuckPerms.
+  description: "Allows players to use Sonic Screwdriver items."
+
+  # Default permission assignment.
   default: OP
 
+# Sound played whenever the Sonic Screwdriver is used.
 sound:
+  # Enable or disable the sound effect.
   enabled: true
+
+  # Minecraft sound name or resource pack sound ID.
   sound: "sonic:sonic.screwdriver"
+
+  # Sound category used when playing the sound.
   category: "player"
+
+  # Playback volume.
   volume: 1.0
+
+  # Playback pitch.
   pitch: 2.0
 
-# What should the item look like for the sonic screwdriver?
-# If you know how to serialize ItemStacks you can use that as a value as well.
+# Appearance of the Sonic Screwdriver item.
 item:
+  # Base material used for the item.
   material: BLAZE_ROD
+
+  # Custom model identifier used by the resource pack.
   custom-model-data: "sonic.screwdriver"
+
+  # Display name shown in-game.
   display-name: "<yellow>Sonic Screwdriver</yellow>"
+
+  # Item lore shown beneath the display name.
   lore:
     - "<dark_purple>Doctor Who!</dark_purple>"
     - "<gray><italic>Allons-y!!</italic></gray>"
 
+# Enable or disable individual Sonic Screwdriver abilities.
+# All abilities are triggered by using (typically right-clicking) the item.
 abilities:
+  # Opens any block that implements Bukkit's Openable interface.
+  # This includes iron and copper doors, trapdoors, fence gates,
+  # and other compatible blocks added by future Minecraft versions.
   open-doors: true
+
+  # Creates fire above an obsidian block.
+  # If the obsidian is part of a valid Nether Portal frame, the portal will be activated.
   light-nether-portal: true
+
+  # Instantly breaks blocks listed below, causing them to drop their normal items.
   instant-break-blocks: true
+
+  # Modifies TNT entities when they are activated with the Sonic Screwdriver.
   overpowered-tnt: true
+
+  # Enhances creepers that are interacted with using the Sonic Screwdriver.
   enhance-creepers: true
 
+# Blocks that will be instantly broken by the Sonic Screwdriver.
+# These blocks drop their normal item drops.
 instant-break-block-types:
   - COBWEB
   - LADDER
   - VINE
 
+# Configuration for TNT modified by the Sonic Screwdriver.
 overpowered-tnt:
+  # Broadcast a configurable message to nearby players within this radius.
+  # The message itself is configured in messages.yml.
   message-radius: 20.0
+
+  # Explosion yield passed to Bukkit/Paper (TNTPrimed#setYield()).
+  # Vanilla TNT uses a yield of 4.0.
   explosion-yield: 100.0
+
+  # Whether the explosion can ignite nearby blocks.
   incendiary: true
+
+  # Fuse duration in ticks (20 ticks = 1 second).
   fuse-ticks: 500
 
+# Configuration for creepers enhanced by the Sonic Screwdriver.
 enhanced-creeper:
+  # Whether enhanced creepers become charged.
   powered: true
+
+  # Explosion radius of enhanced creepers.
   explosion-radius: 100

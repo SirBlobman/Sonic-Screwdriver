@@ -19,6 +19,8 @@ import com.github.sirblobman.sonic.screwdriver.configuration.SonicConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bstats.bukkit.Metrics;
 
+import static com.github.sirblobman.sonic.screwdriver.configuration.ConfigurationHelper.saveResourceIfNotExists;
+
 public final class SonicPlugin extends JavaPlugin {
     private final MiniMessage miniMessage;
     private final SonicConfiguration configuration;
@@ -36,8 +38,8 @@ public final class SonicPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        saveResource("config.yml", false);
-        saveResource("messages.yml", false);
+        saveResourceIfNotExists(this, "config.yml");
+        saveResourceIfNotExists(this, "messages.yml");
     }
 
     @Override
